@@ -7,26 +7,29 @@ class Star_Cinema:
  
 class Hall:
     def __init__(self,rows,cols,hall_no):
-        self.seats={}
+        self.__seats={}
         self.show_list=[]
-        self.rows=rows
-        self.cols=cols
+        self.__rows=rows
+        self.__cols=cols
         self.hall_no=hall_no
 
     def entry_show(self,id,movie_name,time):
         show=(id,movie_name,time)
         self.show_list.append(show)
-        arr = [[0 for _ in range(self.cols)] for _ in range(self.rows)]
-        self.seats[id]=arr
+        arr = [[0 for _ in range(self.__cols)] for _ in range(self.__rows)]
+        self.__seats[id]=arr
     def book_seats(self,id,selected_seats):
         for item in selected_seats:
             r=item[0]
             c=item[1]
-            if self.seats[id][r][c]==0:
-                self.seats[id][r][c]=1
-                print(f'{r,c}Seat booked successfully')
-            else:
-                print(f'{r,c}Seat is not available')
+            try:
+                 if self.__seats[id][r][c]==0:
+                     self.__seats[id][r][c]=1
+                     print(f'{r,c}Seat booked successfully')
+                 else:
+                     print(f'{r,c}Seat is not available')
+            except:
+                print("invalid index")
     def view_show_list(self):
         if self.show_list :
             for item in self.show_list:
@@ -34,13 +37,9 @@ class Hall:
                 
 
     def view_available_seats(self,id):
-        # for i in range(self.rows):
-        #     for j in range(self.cols):
-        #        if self.seats[id][i][j]==0:
-        #         print(f'{i,j}')
-        for i in range(self.rows):
-            for j in range(self.cols):
-                print(f'{self.seats[id][i][j]}',end=" ")
+        for i in range(self.__rows):
+            for j in range(self.__cols):
+                print(f'{self.__seats[id][i][j]}',end=" ")
             print()
      
     
@@ -112,19 +111,23 @@ while True:
          print(f'Number of tickets:',end=" ")
          t_quantity=int(input())
          seat_list=[]
+         flag=False
          for i in range(t_quantity):
              print(f'Enter seat row:',end=" ")
              row=int(input())
              print(f'Enter seat column:',end=" ")
              col=int(input())
              seat_list.append((row,col))
+        
          for hall in star_cinema.hall_list:
             for show in hall.show_list:
                 if show[0]==id:
                     hall.book_seats(id,seat_list)
+                    flag=True
                     break
+         if flag==False:
+            print("Invalid ID")
      elif choice==4:
-         print(f'Do for choice 4')
          break
     
 
